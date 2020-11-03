@@ -8,3 +8,5 @@ Clone Repo ini, buka file `/pages/index.vue`, tambahkan fitur dibawah ini:
 Setelah selesai silahkan buat repository pribadi Anda dan kirim/informasikan link repository pada kami.
 
 Terima kasih.
+
+Dokumentasi API bisa kunjungi situs berikut ini https://reqres.in/
