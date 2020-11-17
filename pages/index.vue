@@ -3,12 +3,18 @@
     <div class="bg-gray-800 rounded-lg shadow">
       <div class="">
         <div
-          v-for="o in data"
+          v-for="o in limitData"
           :key="o.id"
           class="flex items-center px-6 py-4 list relative"
         >
           <div class="mr-5">
-            <img
+            <img v-if="o.avatar == ''"
+              src="../assets/noimage.png"
+              :alt="o.first_name"
+              class="rounded-full"
+              style="width: 50px"
+            >
+            <img v-else-if='o.avatar'
               :src="o.avatar"
               :alt="o.first_name"
               class="rounded-full"
@@ -42,6 +48,28 @@
         </div>
       </div>
     </div>
+    <div class="py-2">
+      <nav class="block">
+        <ul class="flex pl-0 rounded list-none flex-wrap">
+          <li v-for="n in total_pages"
+            :key="n"
+          >
+            <a href="#" v-if="n === page"
+              class="first:ml-0 text-xs font-semibold flex w-8 h-8 mx-1 p-0 rounded-full items-center justify-center leading-tight relative border border-solid border-indigo-500 text-white bg-indigo-500 hover:bg-opacity-25"
+              @click.prevent="changePage(n)"
+            >
+              {{ n }}
+            </a>
+            <a href="#" v-else
+              @click.prevent="changePage(n)"
+              class="first:ml-0 text-xs font-semibold flex w-8 h-8 mx-1 p-0 rounded-full items-center justify-center leading-tight relative border border-solid border-pink-500 bg-white text-pink-500 hover:bg-opacity-25 hover:bg-indigo-400"
+            >
+              {{ n }}
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
     <div class="flex pt-4 justify-center">
       <button class="button bg-green-600 uppercase text-white px-6 py-5 text-sm font-semibold shadow rounded hover:bg-green-400 focuse:outline-none"
         @click.prevent="toggleAddModal = true"
@@ -49,8 +77,7 @@
         Add New user
       </button>
     </div>
-    {{this.data}}
-    <UserAdd @addNewUser="addUser" :showAddModal="toggleAddModal" @close="toggleAddModal = false"/>
+    <UserAdd @addNewUser="addUser" :showAddModal="toggleAddModal" @close="toggleAddModal = false" />
     <UserEdit @updateUser="updateUser" ref="editUserData" :showEditModal="toggleEditModal" @close="toggleEditModal = false" />
     <UserDelete @removeUser="removeUser" ref="deleteUserData" :showDeleteModal="toggleDeleteModal" @close="toggleDeleteModal = false" />
   </div>
@@ -69,10 +96,20 @@ export default {
       response: {},
       toggleAddModal: false,
       toggleEditModal: false,
-      toggleDeleteModal: false
+      toggleDeleteModal: false,
+      per_page: 4,
+      page: 1,
+      total_pages: 0
     }
   },
   computed: {
+    limitData() {
+      if(this.response.total > 1) {
+        let prefix = (this.page-1) * this.per_page
+        let suffix = this.per_page * this.page
+        return this.response.data.slice(prefix, suffix)
+      }
+    },
     data() {
       return this.response.data
     },
@@ -99,6 +136,7 @@ export default {
     async getData() {
       const response = await this.$axios.$get('users')
       this.response = response
+      this.total_pages = Math.ceil(response.data.length / this.per_page)
     },
     addUser(newUser) {
       let array = this.response.data
@@ -107,6 +145,7 @@ export default {
         id: idNewUser,
         ...newUser
       })
+      this.total_pages = Math.ceil(this.data.length / this.per_page)
     },
     inputEditModal(userData) {
       this.toggleEditModal = true;
@@ -134,6 +173,10 @@ export default {
           break
         }
       }
+      this.total_pages = Math.ceil(this.data.length / this.per_page)
+    },
+    changePage(index) {
+      this.page = index
     }
   }
 }

@@ -14,7 +14,7 @@
                     </div>
                     <div class="md:w-3/4">
                         <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg w-full px-4 py-2 text-black leading-tight focus:outline-none focus:bg-white focus:border-blue-200" 
-                        type="text" placeholder="First Name..." v-model="newUser.first_name" id="first_name" name="first_name" required
+                            type="text" placeholder="First Name..." v-model="newUser.first_name" id="first_name" name="first_name" required
                         >
                     </div>
                 </div>
@@ -26,7 +26,7 @@
                     </div>
                     <div class="md:w-3/4">
                         <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg w-full px-4 py-2 text-black leading-tight focus:outline-none focus:bg-white focus:border-blue-200" 
-                        type="text" placeholder="Last Name..." v-model="newUser.last_name" id="last_name" name="last_name" required
+                            type="text" placeholder="Last Name..." v-model="newUser.last_name" id="last_name" name="last_name" required
                         >
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="md:w-3/4">
                         <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg w-full px-4 py-2 text-black leading-tight focus:outline-none focus:bg-white focus:border-blue-200" 
-                        type="email" placeholder="Email..." v-model="newUser.email" id="email" name="email" required
+                            type="email" placeholder="Email..." v-model="newUser.email" id="email" name="email" required
                         >
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                     </div>
                     <div class="md:w-3/4">
                         <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg w-full px-4 py-2 text-black leading-tight focus:outline-none focus:bg-white focus:border-blue-200" 
-                        type="url" placeholder="Avater URL..." v-model="newUser.avatar" id="avatar" name="avatar"
+                            type="url" placeholder="Avater URL..." v-model="newUser.avatar" id="avatar" name="avatar"
                         >
                     </div>
                 </div>
