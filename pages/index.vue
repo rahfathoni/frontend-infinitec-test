@@ -33,7 +33,7 @@
             </a>
             <a
               href="#"
-              @click.prevent="toggleDeleteModal = true"
+              @click.prevent="inputDeleteModal(o)"
               class="uppercase text-sm text-red-500 text-opacity-75 hover:text-opacity-100 font-semibold"
             >
               Delete
@@ -52,7 +52,7 @@
     {{this.data}}
     <UserAdd @addNewUser="addUser" :showAddModal="toggleAddModal" @close="toggleAddModal = false"/>
     <UserEdit @updateUser="updateUser" ref="editUserData" :showEditModal="toggleEditModal" @close="toggleEditModal = false" />
-    <UserDelete :showDeleteModal="toggleDeleteModal" @close="toggleDeleteModal = false" />
+    <UserDelete @removeUser="removeUser" ref="deleteUserData" :showDeleteModal="toggleDeleteModal" @close="toggleDeleteModal = false" />
   </div>
 </template>
 
@@ -108,9 +108,9 @@ export default {
         ...newUser
       })
     },
-    inputEditModal(data) {
+    inputEditModal(userData) {
       this.toggleEditModal = true;
-      this.$refs.editUserData.inputEditData(data)
+      this.$refs.editUserData.inputEditData(userData)
     },
     updateUser(newData){
       for(let i = 0; i < this.data.length; i++){
@@ -122,8 +122,19 @@ export default {
           break
         }
       }
+    },
+    inputDeleteModal(userData){
+      this.toggleDeleteModal = true;
+      this.$refs.deleteUserData.inputDeleteData(userData)
+    },
+    removeUser(userData){
+      for(let i = 0; i < this.data.length; i++){
+        if(this.data[i].id == userData.id){
+          this.data.splice(i, 1)
+          break
+        }
+      }
     }
-
   }
 }
 </script>
