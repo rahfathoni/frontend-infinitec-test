@@ -26,7 +26,7 @@
           <div class="ml-auto">
             <a
               href="#"
-              @click.prevent="toggleEditModal = true"
+              @click.prevent="inputEditModal(o)"
               class="uppercase text-sm text-white text-opacity-75 hover:text-opacity-100 font-semibold"
             >
               Edit
@@ -49,9 +49,9 @@
         Add New user
       </button>
     </div>
-      {{data}}
+    {{this.data}}
     <UserAdd @addNewUser="addUser" :showAddModal="toggleAddModal" @close="toggleAddModal = false"/>
-    <UserEdit :showEditModal="toggleEditModal" @close="toggleEditModal = false" />
+    <UserEdit @updateUser="updateUser" ref="editUserData" :showEditModal="toggleEditModal" @close="toggleEditModal = false" />
     <UserDelete :showDeleteModal="toggleDeleteModal" @close="toggleDeleteModal = false" />
   </div>
 </template>
@@ -100,14 +100,30 @@ export default {
       const response = await this.$axios.$get('users')
       this.response = response
     },
-    addUser(newUser){
+    addUser(newUser) {
       let array = this.response.data
       let idNewUser = array[array.length-1].id + 1
       this.data.push({
         id: idNewUser,
         ...newUser
       })
+    },
+    inputEditModal(data) {
+      this.toggleEditModal = true;
+      this.$refs.editUserData.inputEditData(data)
+    },
+    updateUser(newData){
+      for(let i = 0; i < this.data.length; i++){
+        if(this.data[i].id == newData.id){
+          this.data[i].email = newData.email
+          this.data[i].first_name = newData.first_name
+          this.data[i].last_name = newData.last_name
+          this.data[i].avatar = newData.avatar
+          break
+        }
+      }
     }
+
   }
 }
 </script>
