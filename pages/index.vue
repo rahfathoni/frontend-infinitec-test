@@ -26,12 +26,14 @@
           <div class="ml-auto">
             <a
               href="#"
+              @click.prevent="toggleEditModal = true"
               class="uppercase text-sm text-white text-opacity-75 hover:text-opacity-100 font-semibold"
             >
               Edit
             </a>
             <a
               href="#"
+              @click.prevent="toggleDeleteModal = true"
               class="uppercase text-sm text-red-500 text-opacity-75 hover:text-opacity-100 font-semibold"
             >
               Delete
@@ -40,14 +42,34 @@
         </div>
       </div>
     </div>
+    <div class="flex pt-4 justify-center">
+      <button class="button bg-green-600 uppercase text-white px-6 py-5 text-sm font-semibold shadow rounded hover:bg-green-400 focuse:outline-none"
+        @click.prevent="toggleAddModal = true"
+      >
+        Add New user
+      </button>
+    </div>
+      {{data}}
+    <UserAdd @addNewUser="addUser" :showAddModal="toggleAddModal" @close="toggleAddModal = false"/>
+    <UserEdit :showEditModal="toggleEditModal" @close="toggleEditModal = false" />
+    <UserDelete :showDeleteModal="toggleDeleteModal" @close="toggleDeleteModal = false" />
   </div>
 </template>
 
 <script>
+import UserAdd from "../components/UserAdd";
+import UserEdit from "../components/UserEdit";
+import UserDelete from "../components/UserDelete";
 export default {
+  components: {
+    UserAdd, UserEdit, UserDelete
+  },
   data() {
     return {
-      response: {}
+      response: {},
+      toggleAddModal: false,
+      toggleEditModal: false,
+      toggleDeleteModal: false
     }
   },
   computed: {
@@ -71,12 +93,20 @@ export default {
     }
   },
   mounted() {
-    this.getData()
+      this.getData()
   },
   methods: {
     async getData() {
       const response = await this.$axios.$get('users')
       this.response = response
+    },
+    addUser(newUser){
+      let array = this.response.data
+      let idNewUser = array[array.length-1].id + 1
+      this.data.push({
+        id: idNewUser,
+        ...newUser
+      })
     }
   }
 }
